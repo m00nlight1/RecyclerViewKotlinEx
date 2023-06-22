@@ -9,9 +9,9 @@ import com.example.recyclerviewkotlinex.model.User
 
 class UsersAdapter : RecyclerView.Adapter<UsersAdapter.UsersViewHolder>() {
 
-    private var users: List<User> = emptyList()
-        set(value) {
-            field = value
+    var users: List<User> = emptyList()
+        set(newValue) {
+            field = newValue
             notifyDataSetChanged()
         }
 
@@ -22,6 +22,7 @@ class UsersAdapter : RecyclerView.Adapter<UsersAdapter.UsersViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UsersViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemUserBinding.inflate(inflater, parent, false)
+
         return UsersViewHolder(binding)
     }
 
@@ -32,7 +33,7 @@ class UsersAdapter : RecyclerView.Adapter<UsersAdapter.UsersViewHolder>() {
         with(holder.binding) {
             userNameTextView.text = user.name
             companyTextView.text = user.company
-            if (user.photo.isBlank()) {
+            if (user.photo.isNotBlank()) {
                 Glide.with(photoImageView.context)
                     .load(user.photo)
                     .circleCrop()
@@ -40,6 +41,7 @@ class UsersAdapter : RecyclerView.Adapter<UsersAdapter.UsersViewHolder>() {
                     .error(R.drawable.baseline_account_circle_24)
                     .into(photoImageView)
             } else {
+                Glide.with(photoImageView.context).clear(photoImageView)
                 photoImageView.setImageResource(R.drawable.baseline_account_circle_24)
             }
         }
