@@ -45,8 +45,10 @@ class UsersAdapter(
 
     var users: List<User> = emptyList()
         set(newValue) {
+            val diffCallback = UsersDiffCallback(field, newValue)
+            val diffResult = DiffUtil.calculateDiff(diffCallback)
             field = newValue
-            notifyDataSetChanged()
+            diffResult.dispatchUpdatesTo(this)
         }
 
     override fun onClick(v: View?) {
