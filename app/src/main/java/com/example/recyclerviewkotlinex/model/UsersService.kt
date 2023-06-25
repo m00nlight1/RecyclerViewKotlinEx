@@ -1,7 +1,7 @@
 package com.example.recyclerviewkotlinex.model
 
 import com.github.javafaker.Faker
-import java.util.ArrayList
+import kotlin.collections.ArrayList
 import java.util.Collections
 
 typealias UsersListener = (users: List<User>) -> Unit
@@ -29,7 +29,7 @@ class UsersService {
     }
 
     fun deleteUser(user: User) {
-        val indexToDelete = users.indexOfFirst { it.id == user.id }
+        val indexToDelete = findIndexById(user.id)
         if (indexToDelete != -1) {
             users = ArrayList(users)
             users.removeAt(indexToDelete)
@@ -38,7 +38,7 @@ class UsersService {
     }
 
     fun moveUser(user: User, moveBy: Int) {
-        val oldIndex = users.indexOfFirst { it.id == user.id }
+        val oldIndex = findIndexById(user.id)
         if (oldIndex == -1) return
         val newIndex = oldIndex + moveBy
         if (newIndex < 0 || newIndex >= users.size) return
@@ -46,6 +46,17 @@ class UsersService {
         Collections.swap(users, oldIndex, newIndex)
         notifyChanges()
     }
+
+    fun fireUser(user: User) {
+        val index = findIndexById(user.id)
+        if (index == -1) return
+        val updatedUser = users[index].copy(company = "")
+        users = ArrayList(users)
+        users[index] = updatedUser
+        notifyChanges()
+    }
+
+    private fun findIndexById(userId: Long): Int = users.indexOfFirst { it.id == userId }
 
     fun addListener(listener: UsersListener) {
         listeners.add(listener)

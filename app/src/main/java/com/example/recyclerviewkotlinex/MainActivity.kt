@@ -3,6 +3,7 @@ package com.example.recyclerviewkotlinex
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.recyclerviewkotlinex.databinding.ActivityMainBinding
 import com.example.recyclerviewkotlinex.model.User
@@ -34,11 +35,19 @@ class MainActivity : AppCompatActivity() {
             override fun onUserDelete(user: User) {
                 usersService.deleteUser(user)
             }
+
+            override fun onUserFire(user: User) {
+                usersService.fireUser(user)
+            }
         })
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.adapter = adapter
+        val itemAnimator = binding.recyclerView.itemAnimator
+        if (itemAnimator is DefaultItemAnimator) {
+            itemAnimator.supportsChangeAnimations = false
+        }
 
         usersService.addListener(usersListener)
     }
