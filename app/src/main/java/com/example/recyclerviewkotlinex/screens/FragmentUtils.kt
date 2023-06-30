@@ -4,6 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.recyclerviewkotlinex.App
+import com.example.recyclerviewkotlinex.Navigator
 
 class ViewModelFactory(
     private val app: App
@@ -26,3 +27,5 @@ class ViewModelFactory(
 }
 
 fun Fragment.factory() = ViewModelFactory(requireContext().applicationContext as App)
+
+fun Fragment.navigator() = requireActivity() as Navigator

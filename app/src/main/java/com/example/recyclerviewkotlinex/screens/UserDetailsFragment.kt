@@ -25,7 +25,7 @@ class UserDetailsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentUserDetailsBinding.inflate(layoutInflater, container, false)
         viewModel.userDetails.observe(viewLifecycleOwner, Observer {
             binding.userNameTextView.text = it.user.name
@@ -44,7 +44,8 @@ class UserDetailsFragment : Fragment() {
 
         binding.deleteButton.setOnClickListener {
             viewModel.deleteUser()
-            // todo
+            navigator().toast(R.string.user_has_been_deleted)
+            navigator().goBack()
         }
 
         return binding.root
